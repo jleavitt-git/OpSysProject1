@@ -4,7 +4,12 @@
 #include <time.h>
 #include <stdio.h>
 #include <stdbool.h>
+/*TODO:
 
+Make execvp work
+make sure logic checks proper CPID or Status to see if program terminates.
+
+*/
 double getRaceTime(struct timespec, struct timespec);
 
 int main(){
