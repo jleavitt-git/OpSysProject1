@@ -1,5 +1,3 @@
-test: test.c
-	gcc -g -o test test.c -I
 prolific: prolific.c
 	gcc -o prolific prolific.c
 generation: generation.c
