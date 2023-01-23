@@ -16,8 +16,10 @@ int main()
     printf("Read seed value (converted to integer): %d\n", seed);
     printf("It's time to see the world/file system!\n");
 
+    //obtain process id of parent process
     int parent = getpid();
 
+    //selects 5 random numbers, and based off those numbers, changes directories associated with those values
     for (int i = 0; i < 5; i++)
     {
         printf("Selection #%d: ", i+1);
@@ -49,33 +51,37 @@ int main()
                 break;
         }
 
+        //checks current directory
         checkd();
         
         int child;
 
-            child = fork();
+        //creates a child process
+        child = fork();
 
-            if (child == 0)
-            {
-                char* argument_list[] = {"ls", "-tr", NULL};
-                printf("[Child, PID: %d]: Executing 'ls -tr' command...\n", getpid());
-                execvp("ls", argument_list);
-                exit(0);
-            }
-            printf("[Parent]: I am waiting for PID %d to finish.\n", child);
-            int exitStatus;
-            waitpid(child, &exitStatus, 0);
-            printf("[Parent]: Child %d finished with status code %d. Onward!\n", child, WEXITSTATUS(exitStatus));
+        //if current process is the child process, execute terminal command ls -tr
+        if (child == 0)
+        {
+            char* argument_list[] = {"ls", "-tr", NULL};
+            printf("[Child, PID: %d]: Executing 'ls -tr' command...\n", getpid());
+            execvp("ls", argument_list);
+            exit(0);
+        }
+        printf("[Parent]: I am waiting for PID %d to finish.\n", child);
+        int exitStatus;
+        waitpid(child, &exitStatus, 0);
+        printf("[Parent]: Child %d finished with status code %d. Onward!\n", child, WEXITSTATUS(exitStatus));
     }
 }
 
+//check directory function
 void checkd(){
     char cwd[256];
     getcwd(cwd, sizeof(cwd));
     printf("Current working directory is: %s\n", cwd);
 }
 
-
+//reads side from file
 int getSeed(const char* file_name){
 
     FILE* file = fopen (file_name, "r");
